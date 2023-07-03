@@ -1,0 +1,55 @@
+D = 1;
+dx = 1;
+dy = 1;
+dt =0.25;
+L = 20;
+V = 20;
+tf = 200;
+T=zeros(tf,L,V);
+
+k = D*dt/dx^2;
+c = D*dt/dy^2;
+%define boundary conditons
+for x = 1:L
+    T(1,x,1) = x^2;
+end
+
+    T(:,1,:)=0;
+    T(:,L,:)=0;
+    
+  % euler methode sovele ODE
+  for i =1:tf-1;
+      for j =2:L-1;
+          for n = 2:V-1
+          
+          T(i+1,j,n) = T(i,j,n)+k*(T(i,j-1,n)-2*T(i,j,n)+T(i,j+1,n))+...
+              c*(T(i,j,n-1)-2*T(i,j,n)+T(i,j,n+1));
+          
+          end
+      end
+  end
+  
+  %Produce movie
+  Q=0;
+  for i=1:tf;
+      for j =1:L;
+          for n = 1:V;
+                Q(j,n)=T(i,j,n);
+           end
+      end
+
+      mesh(Q);
+        title('2D surface vs temperature')
+        xlabel('Displacement in X / x')
+        ylabel('Displacement in Y / y')
+        zlabel('Temperature/T')
+
+      M(i)=getframe(gcf);        
+  end
+
+    movie(M)
+    
+   
+
+
+ 

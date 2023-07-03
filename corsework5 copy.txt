@@ -1,0 +1,31 @@
+%declaring constants
+D = 1;		%thermal diffusity
+dx = 1;		%space step size
+dt =0.5;	%time step size
+L = 20;		%length of bar
+tf = 100;	%final time for loop
+T=zeros(tf,L);	%setting all values in T to 0
+
+k = D*dt/dx^2;	%defining k constant
+
+%define initial conditions
+for x = 1:L
+    T(1,x) = x^2;
+end
+
+%Euler method on Heat equation  
+  for i =1:tf-1;	%time loop
+      for j =2:L-1;	%space loop
+          T(i+1,j) = T(i,j)+k*(T(i,j-1)-2*T(i,j)+T(i,j+1));
+      end 
+	%define boundary conditions     
+       T(i+1,1)= T(i+1,2);
+       T(i+1,L)= T(i+1,L-1);
+  end
+ 
+%plotting results  
+mesh(T)
+title('Displacement vs Temperature vs Time ')
+xlabel('Displacement/x')
+ylabel('Time/t')
+zlabel('Temperature/T')
